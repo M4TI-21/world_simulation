@@ -19,11 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="all_animals.cpp" />
+    <ClCompile Include="all_plants.cpp" />
+    <ClCompile Include="animal.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="organism.cpp" />
+    <ClCompile Include="plant.cpp" />
+    <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animal.h" />
+    <ClInclude Include="animal_classes.h" />
     <ClInclude Include="defines.h" />
+    <ClInclude Include="plant_classes.h" />
     <ClInclude Include="organism.h" />
     <ClInclude Include="plant.h" />
     <ClInclude Include="world.h" />
@@ -86,12 +94,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9;C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\common;C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -103,14 +111,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9;C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\common;C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -120,12 +128,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9;C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\common;C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -137,14 +145,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9;C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\common;C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\mateu\Desktop\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\mateu\source\repos\M4TI-21\world_simulation\PDCurses-3.9\wincon;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

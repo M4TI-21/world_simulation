@@ -1,25 +1,28 @@
 #pragma once
 #include <curses.h>
+#include <vector>
+#include <string>
 #include "defines.h"
 #include "organism.h"
+using namespace std;
+
+class Plant;
+class Animal;
 
 class World {
 private:
-	//lista organizmów
-
+	vector<Organism*> organisms;
+	static vector<string> logs;
 public:
-	World() {
-		mvaddstr(CONSOLE_H_A, CONSOLE_W_A, "World has been created.");
-	};
+	World();
 
-	void makeTurn();
-
+	void addNewOrganism(char type);
 	void drawWorld();
 
-	void addOrganism();
+	static void addLog(string message);
+	static void printLog();
 
+	//void makeTurn();
 
-	~World() {
-		mvaddstr(CONSOLE_H_A, CONSOLE_W_A, "World has been destroyed.");
-	};
+	~World();
 };

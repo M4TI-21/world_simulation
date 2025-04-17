@@ -33,12 +33,24 @@ void Animal::action() {
     
     int position = rand() % neigbouring_positions.size();
 
-    mvaddch(y, x, ' ');
     int newX = neigbouring_positions[position][0];
     int newY = neigbouring_positions[position][1];
 
-    setPosition(newX, newY);
-    world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
+    Organism* met_organism = world->getOrganismAt(newX, newY);
+    if (met_organism && met_organism != this) {
+        if (met_organism->getTypeName() == this->getTypeName()) {
+            world->addLog("The same species met.");
+        }
+        else {
+            Animal::collision(met_organism);
+        }
+    }
+
+    if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
+        mvaddch(y, x, ' ');
+        setPosition(newX, newY);
+        world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
+    }
 }
 
 void Animal::collision(Organism* opponent) {
@@ -54,7 +66,7 @@ void Animal::collision(Organism* opponent) {
         world->addLog(opponent->getTypeName() + " defeated " + this->getTypeName());
     }
     else {
-        int success = rand() % 1;
+        int success = rand() % 2;
         if (success == 0) {
             world->removeOrganism(opponent);
         }

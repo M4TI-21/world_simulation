@@ -6,7 +6,7 @@ using namespace std;
 #define WINDOW_H 29
 
 #define CONSOLE_START_X 79
-#define CONSOLE_END_X 119
+#define CONSOLE_END_X 118
 #define CONSOLE_START_Y 3
 #define CONSOLE_END_Y 25
 

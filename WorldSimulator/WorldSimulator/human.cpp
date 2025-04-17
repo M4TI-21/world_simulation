@@ -54,14 +54,14 @@ void Human::action() {
         break;
     }
 
-    mvaddch(y, x, ' ');
-    setPosition(newX, newY);
-    world->addLog("Player moved to (" + to_string(newX) + "," + to_string(newY) + ")");
-
     Organism* met_organism = world->getOrganismAt(newX, newY);
     if (met_organism && met_organism != this) {
         Human::collision(met_organism);
     }
+
+    mvaddch(y, x, ' ');
+    setPosition(newX, newY);
+    world->addLog("Player moved to (" + to_string(newX) + "," + to_string(newY) + ")");
 }
 
 void Human::collision(Organism* opponent) {

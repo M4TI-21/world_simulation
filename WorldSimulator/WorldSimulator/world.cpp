@@ -101,6 +101,14 @@ void World::makeTurn() {
         drawWorld();
         napms(200);
     }
+    addLog("Press space to continue");
+    drawWorld();
+    nodelay(stdscr, FALSE);
+    int key = 0;
+    while (key != ' ') {
+        key = getch();
+    }
+    nodelay(stdscr, TRUE);
 }
 
 Organism* World::getOrganismAt(int x, int y) const {

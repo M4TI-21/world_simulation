@@ -34,6 +34,7 @@ public:
     Fox(int strength, int initiative, int x, int y, World* world);
 
     void draw() const override;
+    void action() override;
     string getTypeName() const override;
 
     ~Fox();
@@ -47,7 +48,6 @@ public:
 
     void draw() const override;
     void action() override;
-    void collision(Organism* other) override;
     string getTypeName() const override;
 
     ~Turtle();

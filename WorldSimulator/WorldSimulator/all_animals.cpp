@@ -63,6 +63,61 @@ string Fox::getTypeName() const {
     return "Fox";
 }
 
+void Fox::action() {
+    vector<vector<int>> neigbouring_positions;
+
+    if (x > (BOARD_START_X + 1)) {
+        Organism* opp = world->getOrganismAt(x - 1, y);
+        if (!opp || opp->getStrength() <= this->getStrength()) {
+            neigbouring_positions.push_back({ x - 1, y });
+        }
+    }
+    if (x < (BOARD_END_X - 1)) {
+        Organism* opp = world->getOrganismAt(x + 1, y);
+        if (!opp || opp->getStrength() <= this->getStrength()) {
+            neigbouring_positions.push_back({ x + 1, y });
+        }
+    }
+    if (y > (BOARD_START_Y + 1)) {
+        Organism* opp = world->getOrganismAt(x, y - 1);
+        if (!opp || opp->getStrength() <= this->getStrength()) {
+            neigbouring_positions.push_back({ x , y - 1 });
+        }
+    }
+    if (y < (BOARD_END_Y - 1)) {
+        Organism* opp = world->getOrganismAt(x, y + 1);
+        if (!opp || opp->getStrength() <= this->getStrength()) {
+            neigbouring_positions.push_back({ x, y + 1});
+        }
+    }
+
+    if (neigbouring_positions.empty()) {
+        world->addLog("Fox has no safe place to move.");
+        return;
+    }
+
+    int position = rand() % neigbouring_positions.size();
+
+    int newX = neigbouring_positions[position][0];
+    int newY = neigbouring_positions[position][1];
+
+    Organism* met_organism = world->getOrganismAt(newX, newY);
+    if (met_organism && met_organism != this) {
+        if (met_organism->getTypeName() == this->getTypeName()) {
+            world->addLog("The same species met.");
+        }
+        else {
+            Animal::collision(met_organism);
+        }
+    }
+    if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
+        mvaddch(y, x, ' ');
+        setPosition(newX, newY);
+        world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
+    }
+
+}
+
 Fox::~Fox() {
     World::addLog("Fox was removed.");
 }
@@ -100,22 +155,32 @@ void Turtle::action() {
     }
 
     int position = rand() % neigbouring_positions.size();
-    int success = rand() % 3;
+    int success = rand() % 4;
 
-    mvaddch(y, x, ' ');
     if (success == 0) {
         int newX = neigbouring_positions[position][0];
         int newY = neigbouring_positions[position][1];
 
-        setPosition(newX, newY);
-        world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
+        Organism* met_organism = world->getOrganismAt(newX, newY);
+        if (met_organism && met_organism != this) {
+            if (met_organism->getTypeName() == this->getTypeName()) {
+                world->addLog("The same species met.");
+            }
+            else {
+                Turtle::collision(met_organism);
+            }
+        }
+
+        if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
+            mvaddch(y, x, ' ');
+            setPosition(newX, newY);
+            world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
+        }
     }
     else {
         world->addLog(getTypeName() + " didn't move.");
     }
 }
-
-void Turtle::collision(Organism* other) {}
 
 Turtle::~Turtle() {
     World::addLog("Turtle was removed.");
@@ -155,22 +220,33 @@ void Antelope::action() {
 
     int position = rand() % neigbouring_positions.size();
 
-    mvaddch(y, x, ' ');
-
     int newX = neigbouring_positions[position][0];
     int newY = neigbouring_positions[position][1];
 
-    setPosition(newX, newY);
-    world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
-    
+    Organism* met_organism = world->getOrganismAt(newX, newY);
+    if (met_organism && met_organism != this) {
+        if (met_organism->getTypeName() == this->getTypeName()) {
+            world->addLog("The same species met.");
+        }
+        else {
+            Antelope::collision(met_organism);
+        }
+    }
+
+    if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
+        mvaddch(y, x, ' ');
+        setPosition(newX, newY);
+        world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
+    }
 }
 
 void Antelope::collision(Organism* opponent) {
+    bool escape = rand() % 2 == 0;
 
-    int escape = rand() % 1;
-
-    if (escape == 0) {
+    if (escape) {
+        attron(COLOR_PAIR('G'));
         world->addLog(Antelope::getTypeName() + " ran away from fight with " + opponent->getTypeName() + ".");
+        attroff(COLOR_PAIR('G'));
         Antelope::action();
         return;
     }
@@ -187,8 +263,8 @@ void Antelope::collision(Organism* opponent) {
             world->addLog(opponent->getTypeName() + " defeated " + Antelope::getTypeName());
         }
         else {
-            int success = rand() % 1;
-            if (success == 0) {
+            bool success = rand() % 2 == 0;
+            if (success) {
                 world->removeOrganism(opponent);
                 world->addLog(Antelope::getTypeName() + " defeated " + opponent->getTypeName());
             }

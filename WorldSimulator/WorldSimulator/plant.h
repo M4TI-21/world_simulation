@@ -3,19 +3,16 @@
 #include <stdlib.h>
 #include "defines.h"
 #include "world.h"
+using namespace std;
 
 class Plant : public Organism {
 public:
     Plant(int strength, int initiative, int x, int y, World* world);
 
-    void draw() const override {
-        attron(COLOR_PAIR('G'));
-        mvaddch(y, x, '*');
-        attroff(COLOR_PAIR('G'));
-    }
-
-    void action() override {}
-    void collision(Organism* other) override {}
+    void draw() const override;
+    void action() override;
+    void collision(Organism* other) override;
+    virtual string getTypeName() const override = 0;
 
     ~Plant();
 };

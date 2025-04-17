@@ -23,6 +23,11 @@ int Organism::getY() const {
 void Organism::setPosition(int newX, int newY) {
     x = newX;
     y = newY;
+    refresh();
+}
+
+void Organism::action() {
+    world->addLog("Organism action");
 }
 
 Organism::~Organism() {}

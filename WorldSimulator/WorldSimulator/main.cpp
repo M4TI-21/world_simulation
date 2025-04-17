@@ -32,19 +32,33 @@ void drawMenu() {
     }
 }
 
-int* selectPosition() {
-    int x = rand() % (BOARD_END_X - BOARD_START_X) + BOARD_START_X;
-    int y = rand() % (BOARD_END_Y - BOARD_START_Y) + BOARD_START_Y;
-
+bool isPositionFree(int x, int y) {
     char position = mvinch(y, x);
 
-    if (position != ' ') {
-        selectPosition();
+    if (position == ' ') {
+        return true;
     }
     else {
-        int position[] = {x, y};
-        return position;
+        return false;
     }
+}
+
+int* selectPosition() {
+    int x, y;
+    bool isFree = false;
+
+    while (!isFree) {
+        x = rand() % (BOARD_END_X - BOARD_START_X) + BOARD_START_X;
+        y = rand() % (BOARD_END_Y - BOARD_START_Y) + BOARD_START_Y;
+
+        isFree = isPositionFree(x, y);
+    }
+
+    int* position = new int[2];
+    position[0] = x;
+    position[1] = y;
+
+    return position;
 }
 
 int main() {
@@ -87,16 +101,42 @@ int main() {
     world->addNewOrganism(FOX);
     world->addNewOrganism(TURTLE);
     world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
+    world->addNewOrganism(TURTLE);
     world->addNewOrganism(ANTELOPE);
     world->addNewOrganism(ANTELOPE);
     world->addNewOrganism(ANTELOPE);
     world->addNewOrganism(ANTELOPE);
 
+    world->addNewOrganism(HUMAN);
     world->drawWorld();
 
-    bool game_end = false;
-    while (!game_end) {
-
+    while (true) {
+        world->makeTurn();
     }
+
     return 0;
 }

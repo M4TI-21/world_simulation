@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+using namespace std;
 
 #define WINDOW_W 120
 #define WINDOW_H 29
@@ -30,3 +32,5 @@ enum OrganismsTypes {
 
 void drawMenu();
 int* selectPosition();
+void moveAnimal();
+bool isPositionFree(int x, int y);

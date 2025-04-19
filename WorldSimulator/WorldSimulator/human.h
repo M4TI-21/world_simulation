@@ -13,6 +13,7 @@ public:
     void action() override;
     void collision(Organism* other) override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Human();
 };

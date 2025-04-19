@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "organism.h"
 using namespace std;
 
 #define WINDOW_W 120
@@ -15,6 +16,8 @@ using namespace std;
 #define BOARD_END_X 75
 #define BOARD_START_Y 3
 #define BOARD_END_Y 26
+
+class Organism;
 
 enum OrganismsTypes {
 	GRASS,
@@ -32,5 +35,5 @@ enum OrganismsTypes {
 
 void drawMenu();
 int* selectPosition();
-void moveAnimal();
 bool isPositionFree(int x, int y);
+bool compareInitiative(Organism* org1, Organism* org2);

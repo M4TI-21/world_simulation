@@ -23,13 +23,18 @@ string Wolf::getTypeName() const {
     return "Wolf";
 }
 
+Organism* Wolf::copy_organism(int x, int y) const {
+    return new Wolf(9, 5, x, y, world);
+}
+
 Wolf::~Wolf() {
     World::addLog("Wolf was removed.");
 }
 
 /*########## Sheep ##########*/
 
-Sheep::Sheep(int strength, int initiative, int x, int y, World* world) : Animal(4, 4, x, y, world) {
+Sheep::Sheep(int strength, int initiative, int x, int y, World* world) 
+    : Animal(4, 4, x, y, world) {
     World::addLog("Sheep has appeared on the world.");
 }
 
@@ -41,6 +46,10 @@ void Sheep::draw() const {
 
 string Sheep::getTypeName() const {
     return "Sheep";
+}
+
+Organism* Sheep::copy_organism(int x, int y) const {
+    return new Sheep(4, 4, x, y, world);
 }
 
 Sheep::~Sheep() {
@@ -61,6 +70,10 @@ void Fox::draw() const {
 
 string Fox::getTypeName() const {
     return "Fox";
+}
+
+Organism* Fox::copy_organism(int x, int y) const {
+    return new Fox(3, 7, x, y, world);
 }
 
 void Fox::action() {
@@ -115,7 +128,6 @@ void Fox::action() {
         setPosition(newX, newY);
         world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
     }
-
 }
 
 Fox::~Fox() {
@@ -136,6 +148,10 @@ void Turtle::draw() const {
 
 string Turtle::getTypeName() const {
     return "Turtle";
+}
+
+Organism* Turtle::copy_organism(int x, int y) const {
+    return new Turtle(2, 1, x, y, world);
 }
 
 void Turtle::action() {
@@ -202,6 +218,10 @@ string Antelope::getTypeName() const {
     return "Antelope";
 }
 
+Organism* Antelope::copy_organism(int x, int y) const {
+    return new Antelope(4, 4, x, y, world);
+}
+
 void Antelope::action() {
     vector<vector<int>> neigbouring_positions;
 
@@ -243,35 +263,50 @@ void Antelope::action() {
 void Antelope::collision(Organism* opponent) {
     bool escape = rand() % 2 == 0;
 
-    if (escape) {
-        attron(COLOR_PAIR('G'));
-        world->addLog(Antelope::getTypeName() + " ran away from fight with " + opponent->getTypeName() + ".");
-        attroff(COLOR_PAIR('G'));
-        Antelope::action();
-        return;
-    }
-    else {
-        int antelope_strength = Antelope::getStrength();
-        int opponent_strength = opponent->getStrength();
-
-        if (antelope_strength > opponent_strength) {
-            world->removeOrganism(opponent);
-            world->addLog(Antelope::getTypeName() + " defeated " + opponent->getTypeName());
-        }
-        else if (antelope_strength < opponent_strength) {
-            world->removeOrganism(this);
-            world->addLog(opponent->getTypeName() + " defeated " + Antelope::getTypeName());
+    bool isOppAnimal = dynamic_cast<Animal*>(opponent);
+    if (isOppAnimal) {
+        if (escape) {
+            attron(COLOR_PAIR('G'));
+            world->addLog(Antelope::getTypeName() + " ran away from fight with " + opponent->getTypeName() + ".");
+            attroff(COLOR_PAIR('G'));
+            Antelope::action();
+            return;
         }
         else {
-            bool success = rand() % 2 == 0;
-            if (success) {
+            int antelope_strength = Antelope::getStrength();
+            int opponent_strength = opponent->getStrength();
+
+            if (antelope_strength > opponent_strength) {
                 world->removeOrganism(opponent);
                 world->addLog(Antelope::getTypeName() + " defeated " + opponent->getTypeName());
             }
-            else {
+            else if (antelope_strength < opponent_strength) {
                 world->removeOrganism(this);
                 world->addLog(opponent->getTypeName() + " defeated " + Antelope::getTypeName());
             }
+            else {
+                bool success = rand() % 2 == 0;
+                if (success) {
+                    world->removeOrganism(opponent);
+                    world->addLog(Antelope::getTypeName() + " defeated " + opponent->getTypeName());
+                }
+                else {
+                    world->removeOrganism(this);
+                    world->addLog(opponent->getTypeName() + " defeated " + Antelope::getTypeName());
+                }
+            }
+        }
+    }
+    else {
+        string oppType = opponent->getTypeName();
+        if (oppType == "Belladonna" || oppType == "Sosowsky's hogweed") {
+            world->removeOrganism(this);
+            world->removeOrganism(opponent);
+            world->addLog(this->getTypeName() + " was poisoned by " + opponent->getTypeName());
+        }
+        else {
+            world->removeOrganism(opponent);
+            world->addLog(this->getTypeName() + " ate " + opponent->getTypeName());
         }
     }
 }

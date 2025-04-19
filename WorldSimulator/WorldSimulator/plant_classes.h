@@ -8,9 +8,8 @@ public:
     Grass(int strength, int initiative, int x, int y, World* world);
 
     void draw() const override;
-    void action() override;
-    void collision(Organism* other) override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Grass();
 };
@@ -20,9 +19,8 @@ public:
     SowThistle(int strength, int initiative, int x, int y, World* world);
 
     void draw() const override;
-    void action() override;
-    void collision(Organism* other) override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~SowThistle();
 };
@@ -32,9 +30,9 @@ public:
     Guarana(int strength, int initiative, int x, int y, World* world);
 
     void draw() const override;
-    void action() override;
-    void collision(Organism* other) override;
+    void collision(Organism* animal) override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Guarana();
 };
@@ -44,9 +42,9 @@ public:
     Belladonna(int strength, int initiative, int x, int y, World* world);
 
     void draw() const override;
-    void action() override;
-    void collision(Organism* other) override;
+    void collision(Organism* animal) override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Belladonna();
 };
@@ -57,8 +55,9 @@ public:
 
     void draw() const override;
     void action() override;
-    void collision(Organism* other) override;
+    void collision(Organism* animal) override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Hogweed();
 };

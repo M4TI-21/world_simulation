@@ -54,25 +54,41 @@ void Animal::action() {
 }
 
 void Animal::collision(Organism* opponent) {
-    int animal_strength = Animal::getStrength();
-    int opponent_strength = opponent->getStrength();
 
-    if (animal_strength > opponent_strength) {
-        world->removeOrganism(opponent);
-        world->addLog(this->getTypeName() + " defeated " + opponent->getTypeName());
-    }
-    else if (animal_strength < opponent_strength) {
-        world->removeOrganism(this);
-        world->addLog(opponent->getTypeName() + " defeated " + this->getTypeName());
-    }
-    else {
-        int success = rand() % 2;
-        if (success == 0) {
+    bool isOppAnimal = dynamic_cast<Animal*>(opponent);
+    if (isOppAnimal) {
+        int animal_strength = Animal::getStrength();
+        int opponent_strength = opponent->getStrength();
+
+        if (animal_strength > opponent_strength) {
             world->removeOrganism(opponent);
+            world->addLog(this->getTypeName() + " defeated " + opponent->getTypeName());
         }
-        else {
+        else if (animal_strength < opponent_strength) {
             world->removeOrganism(this);
             world->addLog(opponent->getTypeName() + " defeated " + this->getTypeName());
+        }
+        else {
+            int success = rand() % 2;
+            if (success == 0) {
+                world->removeOrganism(opponent);
+            }
+            else {
+                world->removeOrganism(this);
+                world->addLog(opponent->getTypeName() + " defeated " + this->getTypeName());
+            }
+        }
+    }
+    else {
+        string oppType = opponent->getTypeName();
+        if (oppType == "Belladonna" || oppType == "Sosowsky's hogweed") {
+            world->removeOrganism(this);
+            world->removeOrganism(opponent);
+            world->addLog(this->getTypeName() + " was poisoned by " + opponent->getTypeName());
+        }
+        else {
+            world->removeOrganism(opponent);
+            world->addLog(this->getTypeName() + " ate " + opponent->getTypeName());
         }
     }
 }

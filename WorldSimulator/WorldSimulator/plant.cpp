@@ -14,9 +14,44 @@ void Plant::draw() const {
 }
 
 void Plant::action() {
-    world->addLog(getTypeName() + " does its action");
+    vector<vector<int>> neigbouring_positions;
+    if (x > (BOARD_START_X + 1)) {
+        neigbouring_positions.push_back({ x - 1, y });
+    }
+    if (x < (BOARD_END_X - 1)) {
+        neigbouring_positions.push_back({ x + 1, y });
+    }
+    if (y > (BOARD_START_Y + 1)) {
+        neigbouring_positions.push_back({ x, y - 1 });
+    }
+    if (y < (BOARD_END_Y - 1)) {
+        neigbouring_positions.push_back({ x, y + 1 });
+    }
+
+    if (neigbouring_positions.empty()) {
+        world->addLog("No place to sow for " + this->getTypeName() + ".");
+        return;
+    }
+
+    bool success = rand() % 4 == 0; //25% chance for sowing
+    int newX = x;
+    int newY = y;
+
+
+    if (success) {
+        int position = rand() % neigbouring_positions.size();
+        newX = neigbouring_positions[position][0];
+        newY = neigbouring_positions[position][1];
+
+        world->addLog(getTypeName() + " sowed on (" + to_string(newX) + ", " + to_string(newY) + ").");
+        Organism* sowed_plant = this->copy_organism(newX, newY);
+        world->pushOrganism(sowed_plant);
+    }
 }
 
-void Plant::collision(Organism* other) {}
+void Plant::collision(Organism* animal) {
+    world->removeOrganism(this);
+    world->addLog(animal->getTypeName() + " ate " + this->getTypeName());
+}
 
 Plant::~Plant() {}

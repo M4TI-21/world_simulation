@@ -7,18 +7,17 @@
 using namespace std;
 
 class Organism;
-class Plant;
-class Animal;
 
 class World {
 private:
 	vector<Organism*> organisms;
 public:
 	static vector<string> logs;
-
+	static int round_number;
 	World();
 
 	void addNewOrganism(char type);
+	void pushOrganism(Organism* organism);
 	void drawWorld();
 	static void addLog(string message);
 	static void printLog();

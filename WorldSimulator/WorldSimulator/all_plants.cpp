@@ -20,8 +20,9 @@ string Grass::getTypeName() const {
     return "Grass";
 }
 
-void Grass::action() {}
-void Grass::collision(Organism* other) {}
+Organism* Grass::copy_organism(int x, int y) const {
+    return new Grass(0, 0, x, y, world);
+}
 
 Grass::~Grass() {
     World::addLog("Grass was removed.");
@@ -44,8 +45,9 @@ string SowThistle::getTypeName() const {
     return "Sow thistle";
 }
 
-void SowThistle::action() {}
-void SowThistle::collision(Organism* other) {}
+Organism* SowThistle::copy_organism(int x, int y) const {
+    return new SowThistle(0, 0, x, y, world);
+}
 
 SowThistle::~SowThistle() {
     World::addLog("Sow thistle was removed.");
@@ -68,8 +70,16 @@ string Guarana::getTypeName() const {
     return "Guarana";
 }
 
-void Guarana::action() {}
-void Guarana::collision(Organism* other) {}
+Organism* Guarana::copy_organism(int x, int y) const {
+    return new Guarana(0, 0, x, y, world);
+}
+
+void Guarana::collision(Organism* animal) {
+    Guarana::increaseStrength();
+    world->addLog(animal->getTypeName() + "'s strength was increased.");
+    world->removeOrganism(this);
+    world->addLog(animal->getTypeName() + " ate " + this->getTypeName());
+}
 
 Guarana::~Guarana() {
     World::addLog("Guarana was removed.");
@@ -91,8 +101,15 @@ string Belladonna::getTypeName() const {
     return "Belladonna";
 }
 
-void Belladonna::action() {}
-void Belladonna::collision(Organism* other) {}
+Organism* Belladonna::copy_organism(int x, int y) const {
+    return new Belladonna(99, 0, x, y, world);
+}
+
+void Belladonna::collision(Organism* other) {
+    world->removeOrganism(this);
+    world->removeOrganism(other);
+    world->addLog(other->getTypeName() + " was poisoned by Belladonna.");
+}
 
 Belladonna::~Belladonna() {
     World::addLog("Belladonna was removed.");
@@ -114,8 +131,16 @@ string Hogweed::getTypeName() const {
     return "Sosowsky's hogweed";
 }
 
+Organism* Hogweed::copy_organism(int x, int y) const {
+    return new Hogweed(10, 0, x, y, world);
+}
+
 void Hogweed::action() {}
-void Hogweed::collision(Organism* other) {}
+void Hogweed::collision(Organism* other) {
+    world->removeOrganism(this);
+    world->removeOrganism(other);
+    world->addLog(other->getTypeName() + " was poisoned by Hogweed.");
+}
 
 Hogweed::~Hogweed() {
     World::addLog("Sosnowsky's hogweed was removed.");

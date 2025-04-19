@@ -1,12 +1,14 @@
 #include <curses.h>
 #include <string>
+#include <algorithm>
 #include "world.h"
 #include "plant_classes.h"
 #include "animal_classes.h"
 #include "human.h"
 using namespace std;
 
-std::vector<std::string> World::logs;
+vector<string> World::logs;
+int World::round_number = 1;
 
 World::World() {
     World::addLog("World has been created.");
@@ -61,6 +63,11 @@ void World::addNewOrganism(char type) {
     refresh();
 }
 
+void World::pushOrganism(Organism* organism) {
+    organisms.push_back(organism);
+    refresh();
+}
+
 void World::addLog(string message) {
     logs.push_back(message);
 
@@ -92,15 +99,26 @@ void World::drawWorld() {
 }
 
 void World::makeTurn() {
-    for (int i = 0; i < organisms.size(); i++) {
-        if (organisms[i]->getTypeName() == "Human") {
+
+    vector<Organism*> currentOrganisms = organisms;
+    sort(currentOrganisms.begin(), currentOrganisms.end(), compareInitiative);
+
+    for (Organism* organism : currentOrganisms) {
+        if (organism->getTypeName() == "Human") {
             addLog("Waiting for player's movement.");
             drawWorld();
         }
-        organisms[i]->action();
+        if (organism->getTypeName() == "Sow thistle") {
+            organism->action();
+            organism->action();
+            drawWorld();
+        }
+
+        organism->action();
         drawWorld();
         napms(200);
     }
+    addLog("----- Turn " + to_string(round_number++) + " has ended -----");
     addLog("Press space to continue");
     drawWorld();
     nodelay(stdscr, FALSE);
@@ -121,13 +139,8 @@ Organism* World::getOrganismAt(int x, int y) const {
 }
 
 void World::removeOrganism(Organism* to_remove) {
-    int index = 0;
-    for (Organism* organism : organisms) {
-        if (organism == to_remove) {
-            organisms.erase(organisms.begin() + index);
-        }
-        index++;
-    }
+    auto index = std::remove(organisms.begin(), organisms.end(), to_remove);
+    organisms.erase(index, organisms.end());
 }
 
 World::~World() {

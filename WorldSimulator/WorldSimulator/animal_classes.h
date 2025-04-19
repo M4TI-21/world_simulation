@@ -11,6 +11,7 @@ public:
 
     void draw() const override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Wolf();
 };
@@ -23,6 +24,7 @@ public:
     
     void draw() const override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Sheep();
 };
@@ -36,6 +38,7 @@ public:
     void draw() const override;
     void action() override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Fox();
 };
@@ -49,6 +52,7 @@ public:
     void draw() const override;
     void action() override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Turtle();
 };
@@ -63,6 +67,7 @@ public:
     void action() override;
     void collision(Organism* other) override;
     string getTypeName() const override;
+    Organism* copy_organism(int x, int y) const override;
 
     ~Antelope();
 };

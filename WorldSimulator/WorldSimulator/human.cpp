@@ -16,6 +16,10 @@ string Human::getTypeName() const {
     return "Human";
 }
 
+Organism* Human::copy_organism(int x, int y) const {
+    return new Human(4, 4, x, y, world);
+}
+
 void Human::action() {
     vector<vector<int>> neigbouring_positions;
 
@@ -65,27 +69,34 @@ void Human::action() {
 }
 
 void Human::collision(Organism* opponent) {
-    int human_strength = Human::getStrength();
-    int opponent_strength = opponent->getStrength();
 
-    if (human_strength > opponent_strength) {
-        world->removeOrganism(opponent);
-        world->addLog("Human defeated " + opponent->getTypeName());
-    }
-    else if (human_strength < opponent_strength) {
-        world->removeOrganism(this);
-        world->addLog(opponent->getTypeName() + " defeated Human.");
-    }
-    else {
-        int success = rand() % 1;
-        if (success == 0) {
+    bool isOppAnimal = dynamic_cast<Animal*>(opponent);
+    if (isOppAnimal) {
+        int human_strength = Human::getStrength();
+        int opponent_strength = opponent->getStrength();
+
+        if (human_strength > opponent_strength) {
             world->removeOrganism(opponent);
             world->addLog("Human defeated " + opponent->getTypeName());
         }
-        else {
+        else if (human_strength < opponent_strength) {
             world->removeOrganism(this);
             world->addLog(opponent->getTypeName() + " defeated Human.");
         }
+        else {
+            int success = rand() % 1;
+            if (success == 0) {
+                world->removeOrganism(opponent);
+                world->addLog("Human defeated " + opponent->getTypeName());
+            }
+            else {
+                world->removeOrganism(this);
+                world->addLog(opponent->getTypeName() + " defeated Human.");
+            }
+        }
+    }
+    else {
+        opponent->collision(this);
     }
 }
 

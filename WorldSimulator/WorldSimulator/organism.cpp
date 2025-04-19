@@ -26,8 +26,8 @@ void Organism::setPosition(int newX, int newY) {
     refresh();
 }
 
-void Organism::action() {
-    world->addLog("Organism action");
+void Organism::increaseStrength() {
+    strength += 3;
 }
 
 Organism::~Organism() {}

@@ -5,7 +5,7 @@
 
 class Animal : public Organism {
 public:
-    Animal(int strength, int initiative, int x, int y, World* world);
+    Animal(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void action() override;

@@ -5,7 +5,7 @@ using namespace std;
 
 class Grass : public Plant {
 public:
-    Grass(int strength, int initiative, int x, int y, World* world);
+    Grass(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     string getTypeName() const override;
@@ -16,7 +16,7 @@ public:
 
 class SowThistle : public Plant {
 public:
-    SowThistle(int strength, int initiative, int x, int y, World* world);
+    SowThistle(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     string getTypeName() const override;
@@ -27,7 +27,7 @@ public:
 
 class Guarana : public Plant {
 public:
-    Guarana(int strength, int initiative, int x, int y, World* world);
+    Guarana(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void collision(Organism* animal) override;
@@ -39,7 +39,7 @@ public:
 
 class Belladonna : public Plant {
 public:
-    Belladonna(int strength, int initiative, int x, int y, World* world);
+    Belladonna(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void collision(Organism* animal) override;
@@ -51,7 +51,7 @@ public:
 
 class Hogweed : public Plant {
 public:
-    Hogweed(int strength, int initiative, int x, int y, World* world);
+    Hogweed(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void action() override;

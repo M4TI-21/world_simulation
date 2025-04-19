@@ -19,37 +19,37 @@ void World::addNewOrganism(char type) {
 
     switch (type) {
     case GRASS:
-        new_organism = new Grass(0, 0, 0, 0, this);
+        new_organism = new Grass(0, 0, 0, 0, 0, this);
         break;
     case SOW_THISTLE:
-        new_organism = new SowThistle(0, 0, 0, 0, this);
+        new_organism = new SowThistle(0, 0, 0, 0, 0, this);
         break;
     case GUARANA:
-        new_organism = new Guarana(0, 0, 0, 0, this);
+        new_organism = new Guarana(0, 0, 0, 0, 0, this);
         break;
     case BELLADONNA:
-        new_organism = new Belladonna(99, 0, 0, 0, this);
+        new_organism = new Belladonna(99, 0, 0, 0, 0, this);
         break;
     case HOGWEED:
-        new_organism = new Hogweed(10, 0, 0, 0, this);
+        new_organism = new Hogweed(10, 0, 0, 0, 0, this);
         break;
     case WOLF:
-        new_organism = new Wolf(0, 0, 0, 0, this);
+        new_organism = new Wolf(0, 0, 0, 0, 0, this);
         break;
     case SHEEP:
-        new_organism = new Sheep(0, 0, 0, 0, this);
+        new_organism = new Sheep(0, 0, 0, 0, 0, this);
         break;
     case FOX:
-        new_organism = new Fox(0, 0, 0, 0, this);
+        new_organism = new Fox(0, 0, 0, 0, 0, this);
         break;
     case TURTLE:
-        new_organism = new Turtle(99, 0, 0, 0, this);
+        new_organism = new Turtle(99, 0, 0, 0, 0, this);
         break;
     case ANTELOPE:
-        new_organism = new Antelope(10, 0, 0, 0, this);
+        new_organism = new Antelope(10, 0, 0, 0, 0, this);
         break;
     case HUMAN:
-        new_organism = new Human(5, 4, 0, 0, this);
+        new_organism = new Human(5, 4, 0, 0, 0, this);
         break;
     }
 
@@ -114,6 +114,7 @@ void World::makeTurn() {
             drawWorld();
         }
 
+        organism->increaseAge();
         organism->action();
         drawWorld();
         napms(200);

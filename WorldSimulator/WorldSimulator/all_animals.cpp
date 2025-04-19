@@ -8,8 +8,7 @@ using namespace std;
 
 /*########## Wolf ##########*/
 
-Wolf::Wolf(int strength, int initiative, int x, int y, World* world)
-    : Animal(9, 5, x, y, world) {
+Wolf::Wolf(int strength, int initiative, int age, int x, int y, World* world) : Animal(9, 5, 0, x, y, world) {
     World::addLog("Wolf has appeared on the world.");
 }
 
@@ -24,7 +23,7 @@ string Wolf::getTypeName() const {
 }
 
 Organism* Wolf::copy_organism(int x, int y) const {
-    return new Wolf(9, 5, x, y, world);
+    return new Wolf(9, 5, 0, x, y, world);
 }
 
 Wolf::~Wolf() {
@@ -33,8 +32,7 @@ Wolf::~Wolf() {
 
 /*########## Sheep ##########*/
 
-Sheep::Sheep(int strength, int initiative, int x, int y, World* world) 
-    : Animal(4, 4, x, y, world) {
+Sheep::Sheep(int strength, int initiative, int age, int x, int y, World* world) : Animal(4, 4, 0, x, y, world) {
     World::addLog("Sheep has appeared on the world.");
 }
 
@@ -49,7 +47,7 @@ string Sheep::getTypeName() const {
 }
 
 Organism* Sheep::copy_organism(int x, int y) const {
-    return new Sheep(4, 4, x, y, world);
+    return new Sheep(4, 4, 0, x, y, world);
 }
 
 Sheep::~Sheep() {
@@ -58,7 +56,7 @@ Sheep::~Sheep() {
 
 /*########## Fox ##########*/
 
-Fox::Fox(int strength, int initiative, int x, int y, World* world) : Animal(3, 7, x, y, world) {
+Fox::Fox(int strength, int initiative, int age, int x, int y, World* world) : Animal(3, 7, 0, x, y, world) {
     World::addLog("Fox has appeared on the world.");
 }
 
@@ -73,7 +71,7 @@ string Fox::getTypeName() const {
 }
 
 Organism* Fox::copy_organism(int x, int y) const {
-    return new Fox(3, 7, x, y, world);
+    return new Fox(3, 7, 0, x, y, world);
 }
 
 void Fox::action() {
@@ -136,7 +134,7 @@ Fox::~Fox() {
 
 /*########## Turtle ##########*/
 
-Turtle::Turtle(int strength, int initiative, int x, int y, World* world) : Animal(2, 1, x, y, world) {
+Turtle::Turtle(int strength, int initiative, int age, int x, int y, World* world) : Animal(2, 1, 0, x, y, world) {
     World::addLog("Turtle has appeared on the world.");
 }
 
@@ -151,7 +149,7 @@ string Turtle::getTypeName() const {
 }
 
 Organism* Turtle::copy_organism(int x, int y) const {
-    return new Turtle(2, 1, x, y, world);
+    return new Turtle(2, 1, 0, x, y, world);
 }
 
 void Turtle::action() {
@@ -204,7 +202,7 @@ Turtle::~Turtle() {
 
 /*########## Antelope ##########*/
 
-Antelope::Antelope(int strength, int initiative, int x, int y, World* world) : Animal(4, 4, x, y, world) {
+Antelope::Antelope(int strength, int initiative, int age, int x, int y, World* world) : Animal(4, 4, 0, x, y, world) {
     World::addLog("Antelope has appeared on the world.");
 }
 
@@ -219,7 +217,7 @@ string Antelope::getTypeName() const {
 }
 
 Organism* Antelope::copy_organism(int x, int y) const {
-    return new Antelope(4, 4, x, y, world);
+    return new Antelope(4, 4, 0, x, y, world);
 }
 
 void Antelope::action() {

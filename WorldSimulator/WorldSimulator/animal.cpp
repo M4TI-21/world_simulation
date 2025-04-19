@@ -2,7 +2,7 @@
 #include "world.h"
 #include "defines.h"
 
-Animal::Animal(int strength, int initiative, int x, int y, World* world) : Organism(strength, initiative, x, y, world) {}
+Animal::Animal(int strength, int initiative, int age, int x, int y, World* world) : Organism(strength, initiative, age, x, y, world) {}
 
 void Animal::draw() const {
     attron(COLOR_PAIR('R'));
@@ -39,7 +39,24 @@ void Animal::action() {
     Organism* met_organism = world->getOrganismAt(newX, newY);
     if (met_organism && met_organism != this) {
         if (met_organism->getTypeName() == this->getTypeName()) {
-            world->addLog("The same species met.");
+            world->addLog("Two " + met_organism->getTypeName() + "s have breeded.");
+
+            neigbouring_positions.erase(neigbouring_positions.begin() + position);
+            
+            if (neigbouring_positions.empty()) {
+                world->addLog("No space for new animal");
+                return;
+            }
+            else {
+                position = rand() % neigbouring_positions.size();
+                newX = neigbouring_positions[position][0];
+                newY = neigbouring_positions[position][1];
+
+                Organism* new_animal = this->copy_organism(newX, newY);
+                world->pushOrganism(new_animal);
+
+                return;
+            }
         }
         else {
             Animal::collision(met_organism);

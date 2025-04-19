@@ -62,7 +62,6 @@ int* selectPosition() {
 }
 
 bool compareInitiative(Organism* org1, Organism* org2) {
-
     return org1->getInitiative() > org2->getInitiative();
 }
 
@@ -92,7 +91,10 @@ int main() {
     world->addNewOrganism(GUARANA);
     world->addNewOrganism(GUARANA);
     world->addNewOrganism(GUARANA);
-    world->addNewOrganism(GUARANA);
+    world->addNewOrganism(HOGWEED);
+    world->addNewOrganism(HOGWEED);
+    world->addNewOrganism(HOGWEED);
+    world->addNewOrganism(HOGWEED);
 
     world->addNewOrganism(WOLF);
     world->addNewOrganism(WOLF);
@@ -119,6 +121,7 @@ int main() {
     world->addNewOrganism(ANTELOPE);
 
     world->addNewOrganism(HUMAN);
+
     world->drawWorld();
 
     while (true) {

@@ -9,15 +9,16 @@ class World;
 
 class Organism {
 protected:
-    int strength, initiative, x ,y;
+    int strength, initiative, age, x ,y;
     World* world;
 public:
-    Organism(int strength, int initiative, int x, int y, World* world);
+    Organism(int strength, int initiative, int age, int x, int y, World* world);
 
     int getStrength() const;
     int getInitiative() const;
     int getX() const;
     int getY() const;
+    int getAge() const;
 
     virtual void draw() const = 0;
     void setPosition(int newX, int newY);
@@ -26,6 +27,7 @@ public:
     virtual void collision(Organism* other) = 0;
     virtual Organism* copy_organism(int x, int y) const = 0;
     void increaseStrength();
+    void increaseAge();
 
     virtual ~Organism();
 };

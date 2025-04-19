@@ -3,10 +3,11 @@
 #include "world.h"
 #include "plant.h"
 #include "plant_classes.h"
+#include "animal.h"
 
 /*########## Grass ##########*/
 
-Grass::Grass(int strength, int initiative, int x, int y, World* world) : Plant(0, 0, x, y, world) {
+Grass::Grass(int strength, int initiative, int age, int x, int y, World* world) : Plant(0, 0, 0, x, y, world) {
     World::addLog("Grass has grown.");
 }
 
@@ -21,7 +22,7 @@ string Grass::getTypeName() const {
 }
 
 Organism* Grass::copy_organism(int x, int y) const {
-    return new Grass(0, 0, x, y, world);
+    return new Grass(0, 0, 0, x, y, world);
 }
 
 Grass::~Grass() {
@@ -30,7 +31,7 @@ Grass::~Grass() {
 
 /*########## Sow Thistle ##########*/
 
-SowThistle::SowThistle(int strength, int initiative, int x, int y, World* world) : Plant(0, 0, x, y, world) {
+SowThistle::SowThistle(int strength, int initiative, int age, int x, int y, World* world) : Plant(0, 0, 0, x, y, world) {
     World::addLog("Sow thistle has grown.");
 }
 
@@ -46,7 +47,7 @@ string SowThistle::getTypeName() const {
 }
 
 Organism* SowThistle::copy_organism(int x, int y) const {
-    return new SowThistle(0, 0, x, y, world);
+    return new SowThistle(0, 0, 0, x, y, world);
 }
 
 SowThistle::~SowThistle() {
@@ -55,7 +56,7 @@ SowThistle::~SowThistle() {
 
 /*########## Guarana ##########*/
 
-Guarana::Guarana(int strength, int initiative, int x, int y, World* world) : Plant(0, 0, x, y, world) {
+Guarana::Guarana(int strength, int initiative, int age, int x, int y, World* world) : Plant(0, 0, 0, x, y, world) {
     World::addLog("Guarana has grown.");
 }
 
@@ -71,7 +72,7 @@ string Guarana::getTypeName() const {
 }
 
 Organism* Guarana::copy_organism(int x, int y) const {
-    return new Guarana(0, 0, x, y, world);
+    return new Guarana(0, 0, 0, x, y, world);
 }
 
 void Guarana::collision(Organism* animal) {
@@ -87,7 +88,7 @@ Guarana::~Guarana() {
 
 /*########## Belladonna ##########*/
 
-Belladonna::Belladonna(int strength, int initiative, int x, int y, World* world) : Plant(99, 0, x, y, world) {
+Belladonna::Belladonna(int strength, int initiative, int age, int x, int y, World* world) : Plant(99, 0, 0, x, y, world) {
     World::addLog("Belladonna has grown.");
 }
 
@@ -102,7 +103,7 @@ string Belladonna::getTypeName() const {
 }
 
 Organism* Belladonna::copy_organism(int x, int y) const {
-    return new Belladonna(99, 0, x, y, world);
+    return new Belladonna(99, 0, 0, x, y, world);
 }
 
 void Belladonna::collision(Organism* other) {
@@ -117,7 +118,7 @@ Belladonna::~Belladonna() {
 
 /*########## Sosowsky's Hogweed ##########*/
 
-Hogweed::Hogweed(int strength, int initiative, int x, int y, World* world) : Plant(10, 0, x, y, world) {
+Hogweed::Hogweed(int strength, int initiative, int age, int x, int y, World* world) : Plant(10, 0, 0, x, y, world) {
     World::addLog("Sosnowsky's hogweed has grown.");
 }
 
@@ -132,10 +133,39 @@ string Hogweed::getTypeName() const {
 }
 
 Organism* Hogweed::copy_organism(int x, int y) const {
-    return new Hogweed(10, 0, x, y, world);
+    return new Hogweed(10, 0, 0, x, y, world);
 }
 
-void Hogweed::action() {}
+void Hogweed::action() {
+    vector<vector<int>> neigbouring_positions;
+
+    if (x > (BOARD_START_X + 1)) {
+        neigbouring_positions.push_back({ x - 1, y });
+    }
+    if (x < (BOARD_END_X - 1)) {
+        neigbouring_positions.push_back({ x + 1, y });
+    }
+    if (y > (BOARD_START_Y + 1)) {
+        neigbouring_positions.push_back({ x, y - 1 });
+    }
+    if (y < (BOARD_END_Y - 1)) {
+        neigbouring_positions.push_back({ x, y + 1 });
+    }
+
+    for (vector<int> position : neigbouring_positions) {
+        int newX = position[0];
+        int newY = position[1];
+
+        Organism* target = world->getOrganismAt(newX, newY);
+        bool isAnimal = dynamic_cast<Animal*>(target);
+
+        if (target && isAnimal) {
+            world->removeOrganism(target);
+            world->addLog(target->getTypeName() + " was killed by Hogweed.");
+        }
+    }
+}
+
 void Hogweed::collision(Organism* other) {
     world->removeOrganism(this);
     world->removeOrganism(other);

@@ -7,7 +7,7 @@ using namespace std;
 
 class Wolf : public Animal {
 public:
-    Wolf(int strength, int initiative, int x, int y, World* world);
+    Wolf(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     string getTypeName() const override;
@@ -20,7 +20,7 @@ public:
 
 class Sheep : public Animal {
 public:
-    Sheep(int strength, int initiative, int x, int y, World* world);
+    Sheep(int strength, int initiative, int age, int x, int y, World* world);
     
     void draw() const override;
     string getTypeName() const override;
@@ -33,7 +33,7 @@ public:
 
 class Fox : public Animal {
 public:
-    Fox(int strength, int initiative, int x, int y, World* world);
+    Fox(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void action() override;
@@ -47,7 +47,7 @@ public:
 
 class Turtle : public Animal {
 public:
-    Turtle(int strength, int initiative, int x, int y, World* world);
+    Turtle(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void action() override;
@@ -61,7 +61,7 @@ public:
 
 class Antelope : public Animal {
 public:
-    Antelope(int strength, int initiative, int x, int y, World* world);
+    Antelope(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void action() override;

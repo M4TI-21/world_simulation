@@ -2,7 +2,7 @@
 #include "world.h"
 #include "human.h"
 
-Human::Human(int strength, int initiative, int x, int y, World* world) : Animal(5, 4, x, y, world) {
+Human::Human(int strength, int initiative, int age, int x, int y, World* world) : Animal(5, 4, 0, x, y, world) {
 	World::addLog("A human came to the world.");
 }	
 
@@ -17,7 +17,7 @@ string Human::getTypeName() const {
 }
 
 Organism* Human::copy_organism(int x, int y) const {
-    return new Human(4, 4, x, y, world);
+    return new Human(4, 4, 0, x, y, world);
 }
 
 void Human::action() {

@@ -5,7 +5,7 @@
 #include "world.h"
 using namespace std;
 
-Plant::Plant(int strength, int initiative, int x, int y, World* world) : Organism(strength, 0, x, y, world) {}
+Plant::Plant(int strength, int initiative, int age, int x, int y, World* world) : Organism(strength, 0, 0, x, y, world) {}
 
 void Plant::draw() const {
     attron(COLOR_PAIR('G'));
@@ -36,7 +36,6 @@ void Plant::action() {
     bool success = rand() % 4 == 0; //25% chance for sowing
     int newX = x;
     int newY = y;
-
 
     if (success) {
         int position = rand() % neigbouring_positions.size();

@@ -7,7 +7,7 @@ using namespace std;
 
 class Human : public Animal {
 public:
-    Human(int strength, int initiative, int x, int y, World* world);
+    Human(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void action() override;

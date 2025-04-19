@@ -8,7 +8,7 @@ using namespace std;
 
 class Plant : public Organism {
 public:
-    Plant(int strength, int initiative, int x, int y, World* world);
+    Plant(int strength, int initiative, int age, int x, int y, World* world);
 
     void draw() const override;
     void action() override;

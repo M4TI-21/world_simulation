@@ -129,7 +129,7 @@ void Hogweed::draw() const {
 }
 
 string Hogweed::getTypeName() const {
-    return "Sosowsky's hogweed";
+    return "Hogweed";
 }
 
 Organism* Hogweed::copy_organism(int x, int y) const {

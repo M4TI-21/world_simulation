@@ -23,12 +23,12 @@ void drawMenu() {
     mvaddstr(0, 0, "World Simulation by Mateusz Hann - 203308");
 
     for (int i = 0; i < WINDOW_W; i++) {
-        mvaddch(1, i, '~');
-        mvaddch(WINDOW_H - 1, i, '~');
+        mvaddch(4, i, '~');
+        mvaddch(WINDOW_H - 4, i, '~');
     }
-    for (int j = 1; j < WINDOW_H; j++) {
+    for (int j = 4; j < WINDOW_H - 3; j++) {
         mvaddch(j, 5, '|');
-        mvaddch(j, WINDOW_W - 45, '|');
+        mvaddch(j, BOARD_END_X + 1, '|');
     }
 }
 
@@ -79,19 +79,11 @@ int main() {
     world->addNewOrganism(GRASS);
     world->addNewOrganism(GRASS);
     world->addNewOrganism(GRASS);
-    world->addNewOrganism(GRASS);
     world->addNewOrganism(SOW_THISTLE);
-    world->addNewOrganism(SOW_THISTLE);
+    world->addNewOrganism(GUARANA);
+    world->addNewOrganism(GUARANA);
     world->addNewOrganism(BELLADONNA);
     world->addNewOrganism(BELLADONNA);
-    world->addNewOrganism(BELLADONNA);
-    world->addNewOrganism(GUARANA);
-    world->addNewOrganism(GUARANA);
-    world->addNewOrganism(GUARANA);
-    world->addNewOrganism(GUARANA);
-    world->addNewOrganism(GUARANA);
-    world->addNewOrganism(GUARANA);
-    world->addNewOrganism(HOGWEED);
     world->addNewOrganism(HOGWEED);
     world->addNewOrganism(HOGWEED);
     world->addNewOrganism(HOGWEED);
@@ -99,15 +91,10 @@ int main() {
     world->addNewOrganism(WOLF);
     world->addNewOrganism(WOLF);
     world->addNewOrganism(WOLF);
-    world->addNewOrganism(WOLF);
-    world->addNewOrganism(WOLF);
     world->addNewOrganism(SHEEP);
     world->addNewOrganism(SHEEP);
     world->addNewOrganism(SHEEP);
     world->addNewOrganism(SHEEP);
-    world->addNewOrganism(SHEEP);
-    world->addNewOrganism(FOX);
-    world->addNewOrganism(FOX);
     world->addNewOrganism(FOX);
     world->addNewOrganism(FOX);
     world->addNewOrganism(FOX);
@@ -115,7 +102,6 @@ int main() {
     world->addNewOrganism(TURTLE);
     world->addNewOrganism(TURTLE);
     world->addNewOrganism(TURTLE);
-    world->addNewOrganism(ANTELOPE);
     world->addNewOrganism(ANTELOPE);
     world->addNewOrganism(ANTELOPE);
     world->addNewOrganism(ANTELOPE);

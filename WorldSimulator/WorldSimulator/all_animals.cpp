@@ -1,4 +1,5 @@
 #include <string>
+#include <string>
 #include <vector>
 #include "defines.h"
 #include "world.h"
@@ -115,12 +116,29 @@ void Fox::action() {
     Organism* met_organism = world->getOrganismAt(newX, newY);
     if (met_organism && met_organism != this) {
         if (met_organism->getTypeName() == this->getTypeName()) {
-            world->addLog("The same species met.");
+
+            neigbouring_positions.erase(neigbouring_positions.begin() + position);
+
+            if (neigbouring_positions.empty()) {
+                world->addLog("No space for new animal");
+                return;
+            }
+            else {
+                position = rand() % neigbouring_positions.size();
+                newX = neigbouring_positions[position][0];
+                newY = neigbouring_positions[position][1];
+
+                Organism* new_animal = this->copy_organism(newX, newY);
+                world->pushOrganism(new_animal);
+
+                return;
+            }
         }
         else {
-            Animal::collision(met_organism);
+            Fox::collision(met_organism);
         }
     }
+
     if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
         mvaddch(y, x, ' ');
         setPosition(newX, newY);
@@ -153,20 +171,7 @@ Organism* Turtle::copy_organism(int x, int y) const {
 }
 
 void Turtle::action() {
-    vector<vector<int>> neigbouring_positions;
-
-    if (x > (BOARD_START_X + 1)) {
-        neigbouring_positions.push_back({ x - 1, y });
-    }
-    if (x < (BOARD_END_X - 1)) {
-        neigbouring_positions.push_back({ x + 1, y });
-    }
-    if (y > (BOARD_START_Y + 1)) {
-        neigbouring_positions.push_back({ x, y - 1 });
-    }
-    if (y < (BOARD_END_Y - 1)) {
-        neigbouring_positions.push_back({ x, y + 1 });
-    }
+    vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
 
     int position = rand() % neigbouring_positions.size();
     int success = rand() % 4;
@@ -178,7 +183,22 @@ void Turtle::action() {
         Organism* met_organism = world->getOrganismAt(newX, newY);
         if (met_organism && met_organism != this) {
             if (met_organism->getTypeName() == this->getTypeName()) {
-                world->addLog("The same species met.");
+                neigbouring_positions.erase(neigbouring_positions.begin() + position);
+
+                if (neigbouring_positions.empty()) {
+                    world->addLog("No space for new animal");
+                    return;
+                }
+                else {
+                    position = rand() % neigbouring_positions.size();
+                    newX = neigbouring_positions[position][0];
+                    newY = neigbouring_positions[position][1];
+
+                    Organism* new_animal = this->copy_organism(newX, newY);
+                    world->pushOrganism(new_animal);
+
+                    return;
+                }
             }
             else {
                 Turtle::collision(met_organism);
@@ -244,7 +264,22 @@ void Antelope::action() {
     Organism* met_organism = world->getOrganismAt(newX, newY);
     if (met_organism && met_organism != this) {
         if (met_organism->getTypeName() == this->getTypeName()) {
-            world->addLog("The same species met.");
+            vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
+
+            if (neigbouring_positions.empty()) {
+                world->addLog("No space for new animal");
+                return;
+            }
+            else {
+                position = rand() % neigbouring_positions.size();
+                newX = neigbouring_positions[position][0];
+                newY = neigbouring_positions[position][1];
+
+                Organism* new_animal = this->copy_organism(newX, newY);
+                world->pushOrganism(new_animal);
+
+                return;
+            }
         }
         else {
             Antelope::collision(met_organism);
@@ -297,7 +332,7 @@ void Antelope::collision(Organism* opponent) {
     }
     else {
         string oppType = opponent->getTypeName();
-        if (oppType == "Belladonna" || oppType == "Sosowsky's hogweed") {
+        if (oppType == "Belladonna" || oppType == "Hogweed") {
             world->removeOrganism(this);
             world->removeOrganism(opponent);
             world->addLog(this->getTypeName() + " was poisoned by " + opponent->getTypeName());

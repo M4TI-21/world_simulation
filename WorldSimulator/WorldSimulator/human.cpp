@@ -21,28 +21,31 @@ Organism* Human::copy_organism(int x, int y) const {
 }
 
 void Human::action() {
-    vector<vector<int>> neigbouring_positions;
-
-    if (x > (BOARD_START_X + 1)) {
-        neigbouring_positions.push_back({ x - 1, y });
-    }
-    if (x < (BOARD_END_X - 1)) {
-        neigbouring_positions.push_back({ x + 1, y });
-    }
-    if (y > (BOARD_START_Y + 1)) {
-        neigbouring_positions.push_back({ x, y - 1 });
-    }
-    if (y < (BOARD_END_Y - 1)) {
-        neigbouring_positions.push_back({ x, y + 1 });
-    }
+    vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
 
     //waiting mode for key press
     nodelay(stdscr, FALSE);
     int key = getch();
     nodelay(stdscr, TRUE);
-    int newX = Human::getX();
-    int newY = Human::getY();
 
+    int newX = x;
+    int newY = y;
+
+    //activate special ability - purification
+    if (key == 'a') {
+        if (abilityActive == 0 && abilityInactive == 0) {
+            abilityActive = 5;
+            abilityInactive = 5;
+            world->addLog("Human special ability has been activated");
+            specialAbility(neigbouring_positions);
+            world->drawWorld();
+        }
+        nodelay(stdscr, FALSE);
+        key = getch();
+        nodelay(stdscr, TRUE);
+    }
+   
+    //human movement
     switch (key) {
     case KEY_UP:
         newY--;
@@ -56,16 +59,30 @@ void Human::action() {
     case KEY_RIGHT:
         newX++;
         break;
+    default:
+        break;
     }
 
+    specialAbility(findNeighbouringPos(newX, newY));
+
     Organism* met_organism = world->getOrganismAt(newX, newY);
-    if (met_organism && met_organism != this) {
-        Human::collision(met_organism);
-    }
 
     mvaddch(y, x, ' ');
     setPosition(newX, newY);
     world->addLog("Player moved to (" + to_string(newX) + "," + to_string(newY) + ")");
+
+    if (abilityActive == 0) {
+        if (met_organism && met_organism != this) {
+            Human::collision(met_organism);
+        }
+    }
+
+    if (abilityActive > 0) {
+        abilityActive--;
+    }
+    else if (abilityInactive > 0) {
+        abilityInactive--;
+    }
 }
 
 void Human::collision(Organism* opponent) {
@@ -99,5 +116,43 @@ void Human::collision(Organism* opponent) {
         opponent->collision(this);
     }
 }
+
+void Human::specialAbility(vector<vector<int>> positions) {
+
+    bool isAbilityActive = abilityActive > 0;
+    if (isAbilityActive) {
+        for (vector<int> position : positions) {
+            int newX = position[0];
+            int newY = position[1];
+
+            Organism* target = world->getOrganismAt(newX, newY);
+            bool isAnimal = dynamic_cast<Animal*>(target);
+
+            if (target && target != this) {
+                world->removeOrganism(target);
+                if (isAnimal) {
+                    world->addLog(target->getTypeName() + " was killed by Human.");
+                }
+                else {
+                    world->addLog(target->getTypeName() + " was destroyed by Human.");
+                }
+            }
+        }
+        world->drawWorld();
+    }
+}
+
+string Human::abilityStatus() const {
+    if (abilityActive > 0) {
+        return "Ability active for " + to_string(abilityActive) + " more rounds.";
+    }
+    else if (abilityInactive > 0) {
+        return "Ability active in " + to_string(abilityInactive) + " rounds.";
+    }
+    else {
+        return "Press 'a' to use special ability.";
+    }
+}
+
 
 Human::~Human() {}

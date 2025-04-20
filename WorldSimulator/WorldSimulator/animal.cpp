@@ -39,8 +39,6 @@ void Animal::action() {
     Organism* met_organism = world->getOrganismAt(newX, newY);
     if (met_organism && met_organism != this) {
         if (met_organism->getTypeName() == this->getTypeName()) {
-            world->addLog("Two " + met_organism->getTypeName() + "s have breeded.");
-
             neigbouring_positions.erase(neigbouring_positions.begin() + position);
             
             if (neigbouring_positions.empty()) {
@@ -98,7 +96,7 @@ void Animal::collision(Organism* opponent) {
     }
     else {
         string oppType = opponent->getTypeName();
-        if (oppType == "Belladonna" || oppType == "Sosowsky's hogweed") {
+        if (oppType == "Belladonna" || oppType == "Hogweed") {
             world->removeOrganism(this);
             world->removeOrganism(opponent);
             world->addLog(this->getTypeName() + " was poisoned by " + opponent->getTypeName());

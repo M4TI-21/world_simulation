@@ -11,6 +11,7 @@ class Organism {
 protected:
     int strength, initiative, age, x ,y;
     World* world;
+    bool isAlive = true;
 public:
     Organism(int strength, int initiative, int age, int x, int y, World* world);
 
@@ -28,6 +29,9 @@ public:
     virtual Organism* copy_organism(int x, int y) const = 0;
     void increaseStrength();
     void increaseAge();
+    void killOrganism();
+    bool checkIfAlive() const;
+    vector<vector<int>> findNeighbouringPos(int x, int y);
 
     virtual ~Organism();
 };

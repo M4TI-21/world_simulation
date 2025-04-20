@@ -6,16 +6,16 @@ using namespace std;
 #define WINDOW_W 120
 #define WINDOW_H 29
 
-#define CONSOLE_START_X 79
+#define CONSOLE_START_X 70
 #define CONSOLE_END_X 118
-#define CONSOLE_START_Y 3
-#define CONSOLE_END_Y 25
+#define CONSOLE_START_Y 5
+#define CONSOLE_END_Y 24
 
 // 70 x 25
 #define BOARD_START_X 7
-#define BOARD_END_X 75
-#define BOARD_START_Y 3
-#define BOARD_END_Y 26
+#define BOARD_END_X 60
+#define BOARD_START_Y 5
+#define BOARD_END_Y 24
 
 class Organism;
 

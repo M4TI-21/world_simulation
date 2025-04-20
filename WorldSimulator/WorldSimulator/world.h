@@ -7,6 +7,7 @@
 using namespace std;
 
 class Organism;
+class Human;
 
 class World {
 private:
@@ -14,6 +15,8 @@ private:
 public:
 	static vector<string> logs;
 	static int round_number;
+	Human* human = nullptr;
+
 	World();
 
 	void addNewOrganism(char type);
@@ -24,6 +27,7 @@ public:
 	void makeTurn();
 	Organism* getOrganismAt(int x, int y) const;
 	void removeOrganism(Organism* organism);
+	void removeDeadOrganism();
 
 	~World();
 };

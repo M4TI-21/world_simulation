@@ -1,4 +1,5 @@
 #include <curses.h>
+#include <fstream>
 #include <string>
 #include <algorithm>
 #include "world.h"
@@ -118,24 +119,34 @@ void World::makeTurn() {
             filteredOrganisms.push_back(organism);
         }
     }
-
+    
+    //sort by initiative and age
     sort(filteredOrganisms.begin(), filteredOrganisms.end(), compareInitiative);
 
     for (Organism* organism : filteredOrganisms) {
-        //check if organism still exists in vector 
+        if (organism == nullptr || !organism->checkIfAlive()) {
+            continue;
+        }
 
+        //check if organism still exists in vector 
         if (organism->getTypeName() == "Human") {
             addLog("Waiting for player's movement.");
             drawWorld();
         }
-        if (organism->getTypeName() == "Sow thistle") {
+
+        //three turns for sow thistle sowing
+        if (organism->getTypeName() == "Sow_thistle") {
             organism->action();
+            if (!organism->checkIfAlive()) {
+                continue;
+            }
             organism->action();
-            drawWorld();
         }
 
         organism->increaseAge();
-        organism->action();
+        if (organism->checkIfAlive()) {
+            organism->action();
+        }
         drawWorld();
         napms(150);
     }
@@ -143,15 +154,26 @@ void World::makeTurn() {
 
     addLog("----- Turn " + to_string(round_number++) + " has ended -----");
     addLog("Press space to continue");
+    addLog("Press 's' to save and exit");
+    addLog("Press 'l' to load saved state");
     drawWorld();
     nodelay(stdscr, FALSE);
     int key = 0;
-    while (key != ' ') {
+    while (key != ' ' && key != 's' && key != 'l') {
         key = getch();
+    }
+
+    if (key == 's') {
+        addLog("Game state has been saved");
+        saveGame();
+    }
+    else if (key == 'l') {
+        loadGame();
     }
     nodelay(stdscr, TRUE);
 }
 
+//get organism at selected position
 Organism* World::getOrganismAt(int x, int y) const {
     for (Organism* organism : organisms) {
         if (organism->getX() == x && organism->getY() == y) {
@@ -161,12 +183,19 @@ Organism* World::getOrganismAt(int x, int y) const {
     return nullptr;
 }
 
+//assign flag for dead organism
 void World::removeOrganism(Organism* to_remove) {
+    //prevent removing human with active ability
+    Human* human = dynamic_cast<Human*>(to_remove);
+    if (human && human->isAbilityActive()) {
+        return;
+    }
     to_remove->killOrganism();
 }
 
 //AI helped me with this function
 void World::removeDeadOrganism() {
+    //remove organisms with dead flag from vector
     organisms.erase(
         remove_if(organisms.begin(), organisms.end(), 
             [](Organism* organism) {
@@ -179,6 +208,88 @@ void World::removeDeadOrganism() {
         organisms.end()
     );
     drawWorld();
+}
+
+void World::saveGame() {
+    ofstream file("save.txt");
+
+    for (Organism* organism : organisms) {
+        if (!organism->checkIfAlive()) {
+            continue;
+        }
+
+        file << organism->getTypeName() << " "
+            << organism->getStrength() << " "
+            << organism->getInitiative() << " "
+            << organism->getAge() << " "
+            << organism->getX() << " "
+            << organism->getY();
+
+        file << endl;
+    }
+    file.close();
+}
+
+void World::loadGame() {
+    ifstream file("save.txt");
+
+    //remove present organisms from vector
+    while (!organisms.empty()) {
+        Organism* organism = organisms.back();
+        removeOrganism(organism);
+        organisms.pop_back();
+        delete organism;
+    }
+
+    human = nullptr;
+
+    string typeName;
+    int strength, initiative, age, x, y;
+
+    while (file >> typeName >> strength >> initiative >> age >> x >> y) {
+        Organism* newOrg = nullptr;
+        //assign saved values to class fields
+        if (typeName == "Sheep") {
+            newOrg = new Sheep(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Wolf") {
+            newOrg = new Wolf(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Fox") {
+            newOrg = new Fox(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Turtle") {
+            newOrg = new Turtle(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Antelope") {
+            newOrg = new Antelope(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Grass") {
+            newOrg = new Grass(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Sow_thistle") {
+            newOrg = new SowThistle(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Guarana") {
+            newOrg = new Guarana(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Belladonna") {
+            newOrg = new Belladonna(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Hogweed") {
+            newOrg = new Hogweed(strength, initiative, age, x, y, this);
+        }
+        else if (typeName == "Human") {
+            newOrg = new Human(strength, initiative, age, x, y, this);
+            human = dynamic_cast<Human*>(newOrg);
+        }
+
+        if (newOrg != nullptr) {
+            pushOrganism(newOrg);
+        }
+    }
+    addLog("Game state has beed restored");
+    round_number = 1;
 }
 
 World::~World() {

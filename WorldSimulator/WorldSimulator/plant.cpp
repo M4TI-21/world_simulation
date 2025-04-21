@@ -7,12 +7,6 @@ using namespace std;
 
 Plant::Plant(int strength, int initiative, int age, int x, int y, World* world) : Organism(strength, 0, 0, x, y, world) {}
 
-void Plant::draw() const {
-    attron(COLOR_PAIR('G'));
-    mvaddch(y, x, '*');
-    attroff(COLOR_PAIR('G'));
-}
-
 void Plant::action() {
     vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
 
@@ -21,7 +15,7 @@ void Plant::action() {
         return;
     }
 
-    bool success = rand() % 4 == 0; //25% chance for sowing
+    bool success = rand() % 5 == 0; //20% chance for sowing
     int newX = x;
     int newY = y;
 

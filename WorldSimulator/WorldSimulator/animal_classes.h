@@ -51,6 +51,7 @@ public:
 
     void draw() const override;
     void action() override;
+    void collision(Organism* opponent) override;
     string getTypeName() const override;
     Organism* copy_organism(int x, int y) const override;
 
@@ -65,7 +66,7 @@ public:
 
     void draw() const override;
     void action() override;
-    void collision(Organism* other) override;
+    void collision(Organism* opponent) override;
     string getTypeName() const override;
     Organism* copy_organism(int x, int y) const override;
 

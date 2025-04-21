@@ -12,6 +12,7 @@ protected:
     int strength, initiative, age, x ,y;
     World* world;
     bool isAlive = true;
+    int prevX, prevY;
 public:
     Organism(int strength, int initiative, int age, int x, int y, World* world);
 
@@ -32,6 +33,10 @@ public:
     void killOrganism();
     bool checkIfAlive() const;
     vector<vector<int>> findNeighbouringPos(int x, int y);
+
+    void savePrevPos();
+    int getPrevX() const;
+    int getPrevY() const;
 
     virtual ~Organism();
 };

@@ -27,9 +27,7 @@ Organism* Wolf::copy_organism(int x, int y) const {
     return new Wolf(9, 5, 0, x, y, world);
 }
 
-Wolf::~Wolf() {
-    World::addLog("Wolf was removed.");
-}
+Wolf::~Wolf() {}
 
 /*########## Sheep ##########*/
 
@@ -51,9 +49,7 @@ Organism* Sheep::copy_organism(int x, int y) const {
     return new Sheep(4, 4, 0, x, y, world);
 }
 
-Sheep::~Sheep() {
-    World::addLog("Sheep was removed.");
-}
+Sheep::~Sheep() {}
 
 /*########## Fox ##########*/
 
@@ -77,6 +73,7 @@ Organism* Fox::copy_organism(int x, int y) const {
 
 void Fox::action() {
     vector<vector<int>> neigbouring_positions;
+    savePrevPos();
 
     if (x > (BOARD_START_X + 1)) {
         Organism* opp = world->getOrganismAt(x - 1, y);
@@ -109,7 +106,6 @@ void Fox::action() {
     }
 
     int position = rand() % neigbouring_positions.size();
-
     int newX = neigbouring_positions[position][0];
     int newY = neigbouring_positions[position][1];
 
@@ -142,13 +138,10 @@ void Fox::action() {
     if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
         mvaddch(y, x, ' ');
         setPosition(newX, newY);
-        world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
     }
 }
 
-Fox::~Fox() {
-    World::addLog("Fox was removed.");
-}
+Fox::~Fox() {}
 
 /*########## Turtle ##########*/
 
@@ -172,6 +165,7 @@ Organism* Turtle::copy_organism(int x, int y) const {
 
 void Turtle::action() {
     vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
+    savePrevPos();
 
     int position = rand() % neigbouring_positions.size();
     int success = rand() % 4;
@@ -208,17 +202,39 @@ void Turtle::action() {
         if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
             mvaddch(y, x, ' ');
             setPosition(newX, newY);
-            world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
         }
-    }
-    else {
-        world->addLog(getTypeName() + " didn't move.");
     }
 }
 
-Turtle::~Turtle() {
-    World::addLog("Turtle was removed.");
+void Turtle::collision(Organism* opponent) {
+    bool isOppAnimal = dynamic_cast<Animal*>(opponent);
+    if (isOppAnimal) {
+        int opponent_strength = opponent->getStrength();
+        if (opponent_strength < 5) {
+            world->addLog(opponent->getTypeName() + " was reflected by Turtle.");
+            opponent->setPosition(opponent->getPrevX(), opponent->getPrevY());
+            return;
+        }
+        else {
+            int turtle_strength = Turtle::getStrength();
+
+            if (turtle_strength > opponent_strength) {
+                world->removeOrganism(opponent);
+                world->addLog(Turtle::getTypeName() + " defeated " + opponent->getTypeName());
+            }
+            else if (turtle_strength < opponent_strength) {
+                world->removeOrganism(this);
+                world->addLog(opponent->getTypeName() + " defeated " + Turtle::getTypeName());
+            }
+            else {
+                world->removeOrganism(opponent);
+                world->addLog(this->getTypeName() + " defeated " + opponent->getTypeName());
+            }
+        }
+    }
 }
+
+Turtle::~Turtle() {}
 
 /*########## Antelope ##########*/
 
@@ -242,6 +258,7 @@ Organism* Antelope::copy_organism(int x, int y) const {
 
 void Antelope::action() {
     vector<vector<int>> neigbouring_positions;
+    savePrevPos();
 
     if (x > (BOARD_START_X + 2)) {
         neigbouring_positions.push_back({ x - 2, y });
@@ -257,7 +274,6 @@ void Antelope::action() {
     }
 
     int position = rand() % neigbouring_positions.size();
-
     int newX = neigbouring_positions[position][0];
     int newY = neigbouring_positions[position][1];
 
@@ -289,7 +305,6 @@ void Antelope::action() {
     if (!met_organism || met_organism->getTypeName() != this->getTypeName()) {
         mvaddch(y, x, ' ');
         setPosition(newX, newY);
-        world->addLog(getTypeName() + " moved to (" + to_string(newX) + "," + to_string(newY) + ")");
     }
 }
 
@@ -299,13 +314,22 @@ void Antelope::collision(Organism* opponent) {
     bool isOppAnimal = dynamic_cast<Animal*>(opponent);
     if (isOppAnimal) {
         if (escape) {
-            attron(COLOR_PAIR('G'));
             world->addLog(Antelope::getTypeName() + " ran away from fight with " + opponent->getTypeName() + ".");
-            attroff(COLOR_PAIR('G'));
-            Antelope::action();
+            
+            vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
+            int position = rand() % neigbouring_positions.size();
+            int newX = neigbouring_positions[position][0];
+            int newY = neigbouring_positions[position][1];
             return;
         }
         else {
+
+            if (opponent->getTypeName() == "Turtle") {
+                Turtle* turtle = dynamic_cast<Turtle*>(opponent);
+                turtle->collision(this);
+                return;
+            }
+
             int antelope_strength = Antelope::getStrength();
             int opponent_strength = opponent->getStrength();
 
@@ -318,15 +342,8 @@ void Antelope::collision(Organism* opponent) {
                 world->addLog(opponent->getTypeName() + " defeated " + Antelope::getTypeName());
             }
             else {
-                bool success = rand() % 2 == 0;
-                if (success) {
-                    world->removeOrganism(opponent);
-                    world->addLog(Antelope::getTypeName() + " defeated " + opponent->getTypeName());
-                }
-                else {
-                    world->removeOrganism(this);
-                    world->addLog(opponent->getTypeName() + " defeated " + Antelope::getTypeName());
-                }
+                world->removeOrganism(opponent);
+                world->addLog(this->getTypeName() + " defeated " + opponent->getTypeName());
             }
         }
     }
@@ -344,6 +361,4 @@ void Antelope::collision(Organism* opponent) {
     }
 }
 
-Antelope::~Antelope() {
-    World::addLog("Antelope was removed.");
-}
+Antelope::~Antelope() {}

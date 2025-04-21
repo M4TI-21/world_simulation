@@ -1,6 +1,7 @@
 #include "animal.h"
 #include "world.h"
 #include "human.h"
+#include "animal_classes.h"
 
 Human::Human(int strength, int initiative, int age, int x, int y, World* world) : Animal(5, 4, 0, x, y, world) {
 	World::addLog("A human came to the world.");
@@ -17,11 +18,12 @@ string Human::getTypeName() const {
 }
 
 Organism* Human::copy_organism(int x, int y) const {
-    return new Human(4, 4, 0, x, y, world);
+    return new Human(5, 4, 0, x, y, world);
 }
 
 void Human::action() {
     vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
+    savePrevPos();
 
     //waiting mode for key press
     nodelay(stdscr, FALSE);
@@ -69,12 +71,15 @@ void Human::action() {
 
     mvaddch(y, x, ' ');
     setPosition(newX, newY);
-    world->addLog("Player moved to (" + to_string(newX) + "," + to_string(newY) + ")");
 
     if (abilityActive == 0) {
         if (met_organism && met_organism != this) {
             Human::collision(met_organism);
         }
+    }
+    else if (abilityActive > 0 && met_organism != nullptr) {
+        world->removeOrganism(met_organism);
+        world->addLog("Human defeated " + met_organism->getTypeName());
     }
 
     if (abilityActive > 0) {
@@ -85,10 +90,17 @@ void Human::action() {
     }
 }
 
+//regular fight when opponent is met
 void Human::collision(Organism* opponent) {
-
     bool isOppAnimal = dynamic_cast<Animal*>(opponent);
     if (isOppAnimal) {
+
+        if (opponent->getTypeName() == "Turtle") {
+            Turtle* turtle = dynamic_cast<Turtle*>(opponent);
+            turtle->collision(this);
+            return;
+        }
+
         int human_strength = Human::getStrength();
         int opponent_strength = opponent->getStrength();
 
@@ -101,15 +113,8 @@ void Human::collision(Organism* opponent) {
             world->addLog(opponent->getTypeName() + " defeated Human.");
         }
         else {
-            int success = rand() % 1;
-            if (success == 0) {
-                world->removeOrganism(opponent);
-                world->addLog("Human defeated " + opponent->getTypeName());
-            }
-            else {
-                world->removeOrganism(this);
-                world->addLog(opponent->getTypeName() + " defeated Human.");
-            }
+            world->removeOrganism(opponent);
+            world->addLog("Human defeated " + opponent->getTypeName());
         }
     }
     else {
@@ -117,6 +122,7 @@ void Human::collision(Organism* opponent) {
     }
 }
 
+//destroy organisms on neighbouring fields - purification ability
 void Human::specialAbility(vector<vector<int>> positions) {
 
     bool isAbilityActive = abilityActive > 0;
@@ -126,15 +132,17 @@ void Human::specialAbility(vector<vector<int>> positions) {
             int newY = position[1];
 
             Organism* target = world->getOrganismAt(newX, newY);
-            bool isAnimal = dynamic_cast<Animal*>(target);
 
             if (target && target != this) {
+                string targetType = target->getTypeName();
+                bool isAnimal = dynamic_cast<Animal*>(target);
+
                 world->removeOrganism(target);
                 if (isAnimal) {
-                    world->addLog(target->getTypeName() + " was killed by Human.");
+                    world->addLog(targetType + " was killed by Human.");
                 }
                 else {
-                    world->addLog(target->getTypeName() + " was destroyed by Human.");
+                    world->addLog(targetType + " was destroyed by Human.");
                 }
             }
         }
@@ -152,6 +160,10 @@ string Human::abilityStatus() const {
     else {
         return "Press 'a' to use special ability.";
     }
+}
+
+bool Human::isAbilityActive() const {
+    return abilityActive > 0;
 }
 
 

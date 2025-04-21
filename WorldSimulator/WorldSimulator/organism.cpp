@@ -2,7 +2,10 @@
 #include "world.h"
 
 Organism::Organism(int strength, int initiative, int age, int x, int y, World* world) 
-    : strength(strength), initiative(initiative), age(age), x(x), y(y), world(world) {}
+    : strength(strength), initiative(initiative), age(age), x(x), y(y), world(world) {
+    prevX = x;
+    prevY = y;
+}
 
 int Organism::getStrength() const {
     return strength;
@@ -39,6 +42,9 @@ void Organism::increaseAge() {
 }
 
 void Organism::killOrganism() {
+    if (this == nullptr) {
+        return;
+    }
     isAlive = false;
 }
 
@@ -63,6 +69,19 @@ vector<vector<int>> Organism::findNeighbouringPos(int x, int y) {
     }
 
     return neigbouring_positions;
+}
+
+int Organism::getPrevX() const {
+    return prevX;
+}
+
+int Organism::getPrevY() const {
+    return prevY;
+}
+
+void Organism::savePrevPos() {
+    prevX = x;
+    prevY = y;
 }
 
 Organism::~Organism() {}

@@ -29,5 +29,8 @@ public:
 	void removeOrganism(Organism* organism);
 	void removeDeadOrganism();
 
+	void loadGame();
+	void saveGame();
+
 	~World();
 };

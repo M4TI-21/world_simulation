@@ -25,9 +25,7 @@ Organism* Grass::copy_organism(int x, int y) const {
     return new Grass(0, 0, 0, x, y, world);
 }
 
-Grass::~Grass() {
-    World::addLog("Grass was removed.");
-}
+Grass::~Grass() {}
 
 /*########## Sow Thistle ##########*/
 
@@ -43,16 +41,14 @@ void SowThistle::draw() const {
 }
 
 string SowThistle::getTypeName() const {
-    return "Sow thistle";
+    return "Sow_thistle";
 }
 
 Organism* SowThistle::copy_organism(int x, int y) const {
     return new SowThistle(0, 0, 0, x, y, world);
 }
 
-SowThistle::~SowThistle() {
-    World::addLog("Sow thistle was removed.");
-}
+SowThistle::~SowThistle() {}
 
 /*########## Guarana ##########*/
 
@@ -77,14 +73,12 @@ Organism* Guarana::copy_organism(int x, int y) const {
 
 void Guarana::collision(Organism* animal) {
     Guarana::increaseStrength();
+    world->addLog(animal->getTypeName() + " ate " + this->getTypeName());
     world->addLog(animal->getTypeName() + "'s strength was increased.");
     world->removeOrganism(this);
-    world->addLog(animal->getTypeName() + " ate " + this->getTypeName());
 }
 
-Guarana::~Guarana() {
-    World::addLog("Guarana was removed.");
-}
+Guarana::~Guarana() {}
 
 /*########## Belladonna ##########*/
 
@@ -109,12 +103,10 @@ Organism* Belladonna::copy_organism(int x, int y) const {
 void Belladonna::collision(Organism* other) {
     world->removeOrganism(this);
     world->removeOrganism(other);
-    world->addLog(other->getTypeName() + " was poisoned by Belladonna.");
+    world->addLog(other->getTypeName() + " was killed by Belladonna.");
 }
 
-Belladonna::~Belladonna() {
-    World::addLog("Belladonna was removed.");
-}
+Belladonna::~Belladonna() {}
 
 /*########## Sosowsky's Hogweed ##########*/
 
@@ -169,9 +161,7 @@ void Hogweed::action() {
 void Hogweed::collision(Organism* other) {
     world->removeOrganism(this);
     world->removeOrganism(other);
-    world->addLog(other->getTypeName() + " was poisoned by Hogweed.");
+    world->addLog(other->getTypeName() + " was killed by Hogweed.");
 }
 
-Hogweed::~Hogweed() {
-    World::addLog("Sosnowsky's hogweed was removed.");
-}
+Hogweed::~Hogweed() {}

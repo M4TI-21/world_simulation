@@ -1,12 +1,12 @@
-#include <iostream>
-#include <stdlib.h>
 #include <curses.h>
 #include <time.h>
 
 #include "defines.h"
 #include "world.h"
 #include "plant_classes.h"
+#include "animal_classes.h"
 #include "organism.h"
+#include "human.h"
 using namespace std;
 
 void initialize_colors() {
@@ -88,6 +88,7 @@ int main() {
     world->addNewOrganism(HOGWEED);
     world->addNewOrganism(HOGWEED);
 
+    world->addNewOrganism(WOLF);
     world->addNewOrganism(WOLF);
     world->addNewOrganism(WOLF);
     world->addNewOrganism(WOLF);

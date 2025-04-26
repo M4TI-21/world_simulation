@@ -129,24 +129,31 @@ Organism* Hogweed::copy_organism(int x, int y) const {
 }
 
 void Hogweed::action() {
-    vector<vector<int>> neigbouring_positions;
+    vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
 
-    if (x > (BOARD_START_X + 1)) {
-        neigbouring_positions.push_back({ x - 1, y });
+    if (neigbouring_positions.empty()) {
+        world->addLog("No place to sow for " + this->getTypeName() + ".");
+        return;
     }
-    if (x < (BOARD_END_X - 1)) {
-        neigbouring_positions.push_back({ x + 1, y });
-    }
-    if (y > (BOARD_START_Y + 1)) {
-        neigbouring_positions.push_back({ x, y - 1 });
-    }
-    if (y < (BOARD_END_Y - 1)) {
-        neigbouring_positions.push_back({ x, y + 1 });
+
+    bool success = rand() % 5 == 0; //20% chance for sowing
+    int newX = x;
+    int newY = y;
+
+    if (success && isAlive) {
+        int position = rand() % neigbouring_positions.size();
+        newX = neigbouring_positions[position][0];
+        newY = neigbouring_positions[position][1];
+
+        if (world->getOrganismAt(newX, newY) == nullptr) {
+            Organism* sowed_plant = this->copy_organism(newX, newY);
+            world->pushOrganism(sowed_plant);
+        }
     }
 
     for (vector<int> position : neigbouring_positions) {
-        int newX = position[0];
-        int newY = position[1];
+        newX = position[0];
+        newY = position[1];
 
         Organism* target = world->getOrganismAt(newX, newY);
         bool isAnimal = dynamic_cast<Animal*>(target);

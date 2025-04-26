@@ -20,6 +20,7 @@ public:
     void specialAbility(vector<vector<int>> positions);
     string abilityStatus() const;
     bool isAbilityActive() const;
+    bool movement(int key, int* newX, int* newY) const;
 
     ~Human();
 };

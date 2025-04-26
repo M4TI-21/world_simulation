@@ -52,6 +52,7 @@ void World::addNewOrganism(char type) {
     case HUMAN:
         new_organism = new Human(5, 4, 0, 0, 0, this);
         human = dynamic_cast<Human*>(new_organism);
+        isHumanAlive = true;
         break;
     }
 
@@ -100,11 +101,16 @@ void World::drawWorld() {
     }
 
     //print ability availability status
-    attron(COLOR_PAIR('G'));
-    if (human != nullptr) {
+    if (isHumanAlive) {
+        attron(COLOR_PAIR('G'));
         mvprintw(BOARD_START_Y - 2, CONSOLE_START_X, human->abilityStatus().c_str());
+        attroff(COLOR_PAIR('G'));
     }
-    attroff(COLOR_PAIR('G'));
+    else {
+        attron(COLOR_PAIR('R'));
+        mvprintw(BOARD_START_Y - 2, CONSOLE_START_X, "Human is dead");
+        attroff(COLOR_PAIR('R'));
+    }
 
     printLog();
     refresh();
@@ -117,6 +123,10 @@ void World::makeTurn() {
     for (Organism* organism : organisms) {
         if (organism->checkIfAlive()) {
             filteredOrganisms.push_back(organism);
+        }
+        
+        if (organism->getTypeName() == "Human" && !organism->checkIfAlive()) {
+            human = nullptr;
         }
     }
     
@@ -186,10 +196,15 @@ Organism* World::getOrganismAt(int x, int y) const {
 //assign flag for dead organism
 void World::removeOrganism(Organism* to_remove) {
     //prevent removing human with active ability
-    Human* human = dynamic_cast<Human*>(to_remove);
-    if (human && human->isAbilityActive()) {
-        return;
+    if (to_remove->getTypeName() == "Human") {
+        Human* human = dynamic_cast<Human*>(to_remove);
+        if (human && human->isAbilityActive()) {
+            return;
+        }
+
+        isHumanAlive = false;
     }
+    
     to_remove->killOrganism();
 }
 
@@ -201,6 +216,7 @@ void World::removeDeadOrganism() {
             [](Organism* organism) {
                 if (!organism->checkIfAlive()) {
                     delete organism;
+                    organism = nullptr;
                     return true;
                 }
                 return false;
@@ -281,7 +297,6 @@ void World::loadGame() {
         }
         else if (typeName == "Human") {
             newOrg = new Human(strength, initiative, age, x, y, this);
-            human = dynamic_cast<Human*>(newOrg);
         }
 
         if (newOrg != nullptr) {

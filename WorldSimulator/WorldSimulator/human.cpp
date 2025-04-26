@@ -21,6 +21,38 @@ Organism* Human::copy_organism(int x, int y) const {
     return new Human(5, 4, 0, x, y, world);
 }
 
+bool Human::movement(int key, int* newX, int* newY) const {
+    switch (key) {
+    case KEY_UP:
+        if (y > (BOARD_START_Y + 1)) {
+            (*newY)--;
+            return true;
+        }
+        return false;
+
+    case KEY_DOWN:
+        if (y < (BOARD_END_Y - 1)) {
+            (*newY)++;
+            return true;
+        }
+        return false;
+    case KEY_LEFT:
+        if (x > (BOARD_START_X + 1)) {
+            (*newX)--;
+            return true;
+        }
+        return false;
+    case KEY_RIGHT:
+        if (x < (BOARD_END_X - 1)) {
+            (*newX)++;
+            return true;
+        }
+        return false;
+    default:
+        return false;
+    }
+}
+
 void Human::action() {
     vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);
     savePrevPos();
@@ -48,21 +80,15 @@ void Human::action() {
     }
    
     //human movement
-    switch (key) {
-    case KEY_UP:
-        newY--;
-        break;
-    case KEY_DOWN:
-        newY++;
-        break;
-    case KEY_LEFT:
-        newX--;
-        break;
-    case KEY_RIGHT:
-        newX++;
-        break;
-    default:
-        break;
+
+    bool hasMoved = movement(key, &newX, &newY);
+
+    if (!hasMoved) {
+        do {
+            key = getch();
+            hasMoved = movement(key, &newX, &newY);
+            break;
+        } while (!hasMoved);
     }
 
     specialAbility(findNeighbouringPos(newX, newY));
@@ -160,6 +186,7 @@ string Human::abilityStatus() const {
     else {
         return "Press 'a' to use special ability.";
     }
+    
 }
 
 bool Human::isAbilityActive() const {

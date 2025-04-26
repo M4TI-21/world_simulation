@@ -16,6 +16,7 @@ public:
 	static vector<string> logs;
 	static int round_number;
 	Human* human = nullptr;
+	bool isHumanAlive = false;
 
 	World();
 

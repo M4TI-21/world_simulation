@@ -1,5 +1,4 @@
 #include <string>
-#include <string>
 #include <vector>
 #include "defines.h"
 #include "world.h"
@@ -320,6 +319,7 @@ void Antelope::collision(Organism* opponent) {
             int position = rand() % neigbouring_positions.size();
             int newX = neigbouring_positions[position][0];
             int newY = neigbouring_positions[position][1];
+            setPosition(newX, newY);
             return;
         }
         else {

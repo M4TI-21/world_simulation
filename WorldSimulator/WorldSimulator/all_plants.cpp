@@ -145,7 +145,7 @@ void Hogweed::action() {
         newX = neigbouring_positions[position][0];
         newY = neigbouring_positions[position][1];
 
-        if (world->getOrganismAt(newX, newY) == nullptr) {
+        if (world->getOrganismPos(newX, newY) == nullptr) {
             Organism* sowed_plant = this->copy_organism(newX, newY);
             world->pushOrganism(sowed_plant);
         }
@@ -155,7 +155,7 @@ void Hogweed::action() {
         newX = position[0];
         newY = position[1];
 
-        Organism* target = world->getOrganismAt(newX, newY);
+        Organism* target = world->getOrganismPos(newX, newY);
         bool isAnimal = dynamic_cast<Animal*>(target);
 
         if (target && isAnimal) {

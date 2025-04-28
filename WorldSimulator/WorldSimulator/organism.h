@@ -30,8 +30,8 @@ public:
     virtual Organism* copy_organism(int x, int y) const = 0;
     void increaseStrength();
     void increaseAge();
-    void killOrganism();
     bool checkIfAlive() const;
+    void killOrganism();
     vector<vector<int>> findNeighbouringPos(int x, int y);
 
     void savePrevPos();

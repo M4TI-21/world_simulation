@@ -24,7 +24,7 @@ void Plant::action() {
         newX = neigbouring_positions[position][0];
         newY = neigbouring_positions[position][1];
 
-        if (world->getOrganismAt(newX, newY) == nullptr) {
+        if (world->getOrganismPos(newX, newY) == nullptr) {
             Organism* sowed_plant = this->copy_organism(newX, newY);
             world->pushOrganism(sowed_plant);
         }

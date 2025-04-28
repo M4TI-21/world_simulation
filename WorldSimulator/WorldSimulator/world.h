@@ -12,10 +12,10 @@ class Human;
 class World {
 private:
 	vector<Organism*> organisms;
+	Human* human = nullptr;
 public:
 	static vector<string> logs;
 	static int round_number;
-	Human* human = nullptr;
 	bool isHumanAlive = false;
 
 	World();
@@ -26,7 +26,7 @@ public:
 	static void addLog(string message);
 	static void printLog();
 	void makeTurn();
-	Organism* getOrganismAt(int x, int y) const;
+	Organism* getOrganismPos(int x, int y) const;
 	void removeOrganism(Organism* organism);
 	void removeDeadOrganism();
 

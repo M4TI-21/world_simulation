@@ -75,25 +75,25 @@ void Fox::action() {
     savePrevPos();
 
     if (x > (BOARD_START_X + 1)) {
-        Organism* opp = world->getOrganismAt(x - 1, y);
+        Organism* opp = world->getOrganismPos(x - 1, y);
         if (!opp || opp->getStrength() <= this->getStrength()) {
             neigbouring_positions.push_back({ x - 1, y });
         }
     }
     if (x < (BOARD_END_X - 1)) {
-        Organism* opp = world->getOrganismAt(x + 1, y);
+        Organism* opp = world->getOrganismPos(x + 1, y);
         if (!opp || opp->getStrength() <= this->getStrength()) {
             neigbouring_positions.push_back({ x + 1, y });
         }
     }
     if (y > (BOARD_START_Y + 1)) {
-        Organism* opp = world->getOrganismAt(x, y - 1);
+        Organism* opp = world->getOrganismPos(x, y - 1);
         if (!opp || opp->getStrength() <= this->getStrength()) {
             neigbouring_positions.push_back({ x , y - 1 });
         }
     }
     if (y < (BOARD_END_Y - 1)) {
-        Organism* opp = world->getOrganismAt(x, y + 1);
+        Organism* opp = world->getOrganismPos(x, y + 1);
         if (!opp || opp->getStrength() <= this->getStrength()) {
             neigbouring_positions.push_back({ x, y + 1});
         }
@@ -108,7 +108,7 @@ void Fox::action() {
     int newX = neigbouring_positions[position][0];
     int newY = neigbouring_positions[position][1];
 
-    Organism* met_organism = world->getOrganismAt(newX, newY);
+    Organism* met_organism = world->getOrganismPos(newX, newY);
     if (met_organism && met_organism != this) {
         if (met_organism->getTypeName() == this->getTypeName()) {
 
@@ -173,7 +173,7 @@ void Turtle::action() {
         int newX = neigbouring_positions[position][0];
         int newY = neigbouring_positions[position][1];
 
-        Organism* met_organism = world->getOrganismAt(newX, newY);
+        Organism* met_organism = world->getOrganismPos(newX, newY);
         if (met_organism && met_organism != this) {
             if (met_organism->getTypeName() == this->getTypeName()) {
                 neigbouring_positions.erase(neigbouring_positions.begin() + position);
@@ -276,7 +276,7 @@ void Antelope::action() {
     int newX = neigbouring_positions[position][0];
     int newY = neigbouring_positions[position][1];
 
-    Organism* met_organism = world->getOrganismAt(newX, newY);
+    Organism* met_organism = world->getOrganismPos(newX, newY);
     if (met_organism && met_organism != this) {
         if (met_organism->getTypeName() == this->getTypeName()) {
             vector<vector<int>> neigbouring_positions = findNeighbouringPos(x, y);

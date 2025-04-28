@@ -37,3 +37,4 @@ void drawMenu();
 int* selectPosition();
 bool isPositionFree(int x, int y);
 bool compareInitiative(Organism* org1, Organism* org2);
+bool compareAge(Organism* org1, Organism* org2);

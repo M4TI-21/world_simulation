@@ -20,7 +20,7 @@ void Animal::action() {
     int newX = neigbouring_positions[position][0];
     int newY = neigbouring_positions[position][1];
 
-    Organism* met_organism = world->getOrganismAt(newX, newY);
+    Organism* met_organism = world->getOrganismPos(newX, newY);
     if (met_organism && met_organism != this) {
         //breeding when same species meet
         if (met_organism->getTypeName() == this->getTypeName()) {

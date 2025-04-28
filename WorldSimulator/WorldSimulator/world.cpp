@@ -35,19 +35,19 @@ void World::addNewOrganism(char type) {
         new_organism = new Hogweed(10, 0, 0, 0, 0, this);
         break;
     case WOLF:
-        new_organism = new Wolf(0, 0, 0, 0, 0, this);
+        new_organism = new Wolf(9, 5, 0, 0, 0, this);
         break;
     case SHEEP:
-        new_organism = new Sheep(0, 0, 0, 0, 0, this);
+        new_organism = new Sheep(4, 4, 0, 0, 0, this);
         break;
     case FOX:
-        new_organism = new Fox(0, 0, 0, 0, 0, this);
+        new_organism = new Fox(3, 7, 0, 0, 0, this);
         break;
     case TURTLE:
-        new_organism = new Turtle(99, 0, 0, 0, 0, this);
+        new_organism = new Turtle(2, 1, 0, 0, 0, this);
         break;
     case ANTELOPE:
-        new_organism = new Antelope(10, 0, 0, 0, 0, this);
+        new_organism = new Antelope(4, 4, 0, 0, 0, this);
         break;
     case HUMAN:
         new_organism = new Human(5, 4, 0, 0, 0, this);
@@ -63,7 +63,6 @@ void World::addNewOrganism(char type) {
 
         delete[] position;
     }
-    refresh();
 }
 
 void World::pushOrganism(Organism* organism) {
@@ -132,6 +131,7 @@ void World::makeTurn() {
     
     //sort by initiative and age
     sort(filteredOrganisms.begin(), filteredOrganisms.end(), compareInitiative);
+    sort(filteredOrganisms.begin(), filteredOrganisms.end(), compareAge);
 
     for (Organism* organism : filteredOrganisms) {
         if (organism == nullptr || !organism->checkIfAlive()) {
@@ -147,16 +147,15 @@ void World::makeTurn() {
         //three turns for sow thistle sowing
         if (organism->getTypeName() == "Sow_thistle") {
             organism->action();
-            if (!organism->checkIfAlive()) {
-                continue;
-            }
             organism->action();
         }
 
         organism->increaseAge();
+
         if (organism->checkIfAlive()) {
             organism->action();
         }
+
         drawWorld();
         napms(150);
     }
@@ -184,7 +183,7 @@ void World::makeTurn() {
 }
 
 //get organism at selected position
-Organism* World::getOrganismAt(int x, int y) const {
+Organism* World::getOrganismPos(int x, int y) const {
     for (Organism* organism : organisms) {
         if (organism->getX() == x && organism->getY() == y) {
             return organism;
@@ -208,7 +207,6 @@ void World::removeOrganism(Organism* to_remove) {
     to_remove->killOrganism();
 }
 
-//AI helped me with this function
 void World::removeDeadOrganism() {
     //remove organisms with dead flag from vector
     organisms.erase(

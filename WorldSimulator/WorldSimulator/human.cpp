@@ -93,7 +93,7 @@ void Human::action() {
 
     specialAbility(findNeighbouringPos(newX, newY));
 
-    Organism* met_organism = world->getOrganismAt(newX, newY);
+    Organism* met_organism = world->getOrganismPos(newX, newY);
 
     mvaddch(y, x, ' ');
     setPosition(newX, newY);
@@ -120,7 +120,6 @@ void Human::action() {
 void Human::collision(Organism* opponent) {
     bool isOppAnimal = dynamic_cast<Animal*>(opponent);
     if (isOppAnimal) {
-
         if (opponent->getTypeName() == "Turtle") {
             Turtle* turtle = dynamic_cast<Turtle*>(opponent);
             turtle->collision(this);
@@ -157,7 +156,7 @@ void Human::specialAbility(vector<vector<int>> positions) {
             int newX = position[0];
             int newY = position[1];
 
-            Organism* target = world->getOrganismAt(newX, newY);
+            Organism* target = world->getOrganismPos(newX, newY);
 
             if (target && target != this) {
                 string targetType = target->getTypeName();

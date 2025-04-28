@@ -65,6 +65,10 @@ bool compareInitiative(Organism* org1, Organism* org2) {
     return org1->getInitiative() > org2->getInitiative();
 }
 
+bool compareAge(Organism* org1, Organism* org2) {
+    return org1->getAge() > org2->getAge();
+}
+
 int main() {
     
     initscr();
@@ -86,37 +90,6 @@ int main() {
     world->addNewOrganism(BELLADONNA);
     world->addNewOrganism(BELLADONNA);
     world->addNewOrganism(BELLADONNA);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
-    world->addNewOrganism(HOGWEED);
     world->addNewOrganism(HOGWEED);
     world->addNewOrganism(HOGWEED);
     world->addNewOrganism(HOGWEED);

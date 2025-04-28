@@ -41,15 +41,12 @@ void Organism::increaseAge() {
     age += 1;
 }
 
-void Organism::killOrganism() {
-    if (this == nullptr) {
-        return;
-    }
-    isAlive = false;
-}
-
 bool Organism::checkIfAlive() const {
     return isAlive;
+}
+
+void Organism::killOrganism() {
+    isAlive = false;
 }
 
 vector<vector<int>> Organism::findNeighbouringPos(int x, int y) {
